@@ -1,0 +1,36 @@
+name: C++17 Monte Carlo regression
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-run-verify:
+    name: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Enable MSVC command line
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Compile on Linux
+        if: runner.os == 'Linux'
+        run: g++ -std=c++17 -O2 -Wall -Wextra -Wpedantic main.cpp -o wood_house
+      - name: Compile on Windows
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: cl /nologo /std:c++17 /O2 /EHsc /W4 main.cpp /Fe:wood_house.exe
+      - name: Simulate on Linux
+        if: runner.os == 'Linux'
+        run: ./wood_house california_wood_house_inputs_v4.csv california_wood_house_settings_v4.csv results.csv
+      - name: Simulate on Windows
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: wood_house.exe california_wood_house_inputs_v4.csv california_wood_house_settings_v4.csv results.csv
+      - name: Verify simulated results
+        run: python scripts/verify_outputs.py results.csv

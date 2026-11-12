@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.16)
+project(wood_frame_house_monte_carlo LANGUAGES CXX)
+
+add_executable(wood_house main.cpp)
+target_compile_features(wood_house PRIVATE cxx_std_17)
+if(MSVC)
+  target_compile_options(wood_house PRIVATE /W4 /EHsc)
+else()
+  target_compile_options(wood_house PRIVATE -Wall -Wextra -Wpedantic)
+endif()

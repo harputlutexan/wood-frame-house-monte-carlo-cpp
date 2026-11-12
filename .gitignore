@@ -1,0 +1,24 @@
+# Compiled files and build trees
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+*.exe
+*.obj
+*.o
+*.pdb
+*.ilk
+*.idb
+wood_house
+
+# Generated simulation output; checked reference lives under sample_results/
+/results.csv
+/results_*.csv
+/results_vscode.csv
+
+# Local environment
+.vscode/
+.idea/
+.DS_Store
+__pycache__/
+*.pyc
